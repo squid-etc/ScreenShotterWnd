@@ -16,4 +16,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ScreenShotter.Engine\ScreenShotter.Engine.csproj" />
+  </ItemGroup>
+
 </Project>
