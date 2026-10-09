@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="Screenshotter" Height="350" Width="720" ResizeMode="NoResize">
+        Title="ScreenShotter" Height="350" Width="720" ResizeMode="CanMinimize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -18,29 +18,29 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.8*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <GroupBox Header="Hot Key"              Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="6" FontSize="16" Margin="10,5,10,5"/>
-        <GroupBox Header="Save to Folder"       Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="6" FontSize="16" Margin="10,5,10,5"/>
+        <GroupBox Header="Save ScreenShots to Folder"       Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="6" FontSize="16" Margin="10,5,10,5"/>
         <GroupBox Header="Hot Key Registration" Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="6" FontSize="16" Margin="10,5,10,5"/>
 
-        <CheckBox x:Name="cbAltMod"   Grid.Column="0" Grid.Row="0" Content="Alt" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="16" Margin="5,10,0,0"/>
-        <CheckBox x:Name="cbCtrlMod"  Grid.Column="1" Grid.Row="0" Content="Ctrl" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="16" Margin="5,10,0,0"/>
-        <CheckBox x:Name="cbShiftMod" Grid.Column="2" Grid.Row="0" Content="Shift" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="16" Margin="5,10,0,0"/>
-        <Label    x:Name="lblKey"     Grid.Column="4" Grid.Row="0" Content="Key:" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="5,10,0,0"/>
-        <ComboBox x:Name="cmbxKey"    Grid.Column="5" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="5,10,5,0" Width="80" SelectionChanged="cmbxKey_SelectionChanged"/>
+        <CheckBox x:Name="cbAltMod"   Grid.Column="0" Grid.Row="0" Content="Alt" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="16" Margin="41,37,0,0" Checked="cbModificators_CheckedChanged" Unchecked="cbModificators_CheckedChanged"/>
+        <CheckBox x:Name="cbCtrlMod"  Grid.Column="1" Grid.Row="0" Content="Ctrl" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="16" Margin="38,37,0,0" Checked="cbModificators_CheckedChanged" Unchecked="cbModificators_CheckedChanged"/>
+        <CheckBox x:Name="cbShiftMod" Grid.Column="2" Grid.Row="0" Content="Shift" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="16" Margin="35,37,0,0" Checked="cbModificators_CheckedChanged" Unchecked="cbModificators_CheckedChanged"/>
+        <Label    x:Name="lblKey"     Grid.Column="4" Grid.Row="0" Content="Key:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="41,31,0,0"/>
+        <ComboBox x:Name="cmbxKey"    Grid.Column="5" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="18,33,0,0" Width="80" SelectionChanged="cmbxKey_SelectionChanged"/>
 
-        <Label  x:Name="lblFolder"       Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="3" Content="PATH" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Margin="15,10,0,0"/>
-        <Button x:Name="btnBrowseFolder" Grid.Row="1" Grid.Column="4" Content="Browse..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="5,10,5,0" Width="80" Click="btnBrowseFolder_Click"/>
-        <Button x:Name="btnClearFolder"  Grid.Row="1" Grid.Column="5" Content="Clear" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="5,10,5,0" Width="80" Click="btnClearFolder_Click"/>
+        <Label  x:Name="lblFolder"       Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Grid.ColumnSpan="4" Width="450" Content="EMPTY PATH" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="15,31,0,0"/>
+        <Button x:Name="btnBrowseFolder" Grid.Row="1" Grid.Column="4" Content="Browse..." HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" Margin="0,34,0,0" Width="80" Click="btnBrowseFolder_Click"/>
+        <Button x:Name="btnClearFolder"  Grid.Row="1" Grid.Column="5" Content="Clear" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="18,34,0,0" Width="80" Click="btnClearFolder_Click"/>
 
-        <Button x:Name="btnRegister"   Grid.Row="2" Grid.Column="0" Content="Register"                      HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="5,10,0,0" Width="80"/>
-        <Label  x:Name="lblHotKey"     Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Content="Registered Hot Key: N/A"       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="5,10,0,0"/>
-        <Button x:Name="btnUnregister" Grid.Row="2" Grid.Column="4"                     Content="Unregister" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Margin="5,10,0,0" Width="80" IsEnabled="False"/>
+        <Label  x:Name="lblStatus"     Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Content="status: "       HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="15,31,0,0"/>
 
-        <Label  x:Name="lblStatus"     Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" Content="status: "       HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Margin="15,10,0,0"/>
+        <Button x:Name="btnRegister"   Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Content="Register"                HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="21,34,0,0" Width="80" Click="btnRegister_Click" />
+        <Label  x:Name="lblHotKey"     Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Content="Registered Hot Key: N/A" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="86,31,0,0"/>
+        <Button x:Name="btnUnregister" Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="1" Content="Unregister"              HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="20,34,0,0" Width="80" IsEnabled="False" Click="btnUnregister_Click"/>
 
     </Grid>
 </Window>

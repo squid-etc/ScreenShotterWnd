@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ScreenShotter.Engine
 {
@@ -8,6 +9,8 @@ namespace ScreenShotter.Engine
         public const uint MOD_CONTROL = 2;
         public const uint MOD_SHIFT = 4;
 
+        private const int HOTKEY_SCREENSHOT = 1;
+        public const int WM_HOTKEY = 0x0312;
         private const string JSON_FILE_NAME = "UiSettings.json";
 
         public static readonly IReadOnlyDictionary<string, uint> AvailableKeys = new Dictionary<string, uint>
@@ -50,5 +53,11 @@ namespace ScreenShotter.Engine
             { "8", 0x38 },
             { "9", 0x39 },
         };
+
+        [DllImport("user32.dll")]
+        static extern bool RegisterHotKey(IntPtr hWnd, int hotkeyId, uint fsModifiers, uint vk);
+
+        [DllImport("user32.dll")]
+        static extern bool UnregisterHotKey(IntPtr hWnd, int hotkeyId);
     }
 }

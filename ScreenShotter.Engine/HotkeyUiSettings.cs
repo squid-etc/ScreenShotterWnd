@@ -10,7 +10,7 @@ namespace ScreenShotter.Engine
     /// class for storing the UI settings and serialize these settings to the JSON file
     /// </summary>
     [Serializable]
-    public class SettingsForUI
+    public class HotKeyUiSettings
     {
         public bool bAltMod { get; set; } = false;
         public bool bCtrlMod { get; set; } = false;
@@ -20,7 +20,7 @@ namespace ScreenShotter.Engine
         /// <summary>
         /// property about was Hot Key registered successfully when App ran last time.
         /// </summary>
-        public bool bWasRegisteredSussessfully { get; set; } = false;
+        public bool bHotKeyRegistered { get; set; } = false;
 
     }
 }
