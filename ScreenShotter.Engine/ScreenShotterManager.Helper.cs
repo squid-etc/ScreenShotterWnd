@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ScreenShotter.Engine
 {
-    public partial class ScreenShotterManager
+    public static partial class ScreenShotterManager
     {
         public const uint MOD_ALT = 1;
         public const uint MOD_CONTROL = 2;
@@ -53,6 +53,19 @@ namespace ScreenShotter.Engine
             { "8", 0x38 },
             { "9", 0x39 },
         };
+
+        public static string GetKeyName(uint virtualKeyCode)
+        {
+            foreach (KeyValuePair<string, uint> pair in AvailableKeys)
+            {
+                if (pair.Value == virtualKeyCode)
+                {
+                    return pair.Key;
+                }
+            }
+
+            return string.Empty;
+        }
 
         [DllImport("user32.dll")]
         static extern bool RegisterHotKey(IntPtr hWnd, int hotkeyId, uint fsModifiers, uint vk);

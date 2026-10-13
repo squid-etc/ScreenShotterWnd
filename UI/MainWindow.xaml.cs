@@ -25,21 +25,27 @@ namespace UI
     {
         private readonly NotifyIcon _notifyIcon;
         private bool _isExiting;
-        private ScreenShotterManager _csManager;
         private const string csEmptyPath = "EMPTY PATH";
 
         public MainWindow()
         {
             InitializeComponent();
             _notifyIcon = CreateNotifyIcon();
-            _csManager = new ScreenShotterManager(AppContext.BaseDirectory);
+            HotKeyUiSettings settings =  ScreenShotterManager.Init(AppContext.BaseDirectory);
 
             List<string> keys = ScreenShotterManager.AvailableKeys.Keys.ToList();
             keys.Insert(0, string.Empty);
             cmbxKey.ItemsSource = keys;
 
-            // TODO: we will remove it once we load Hot Key from the JSON
-            ValidateUIControlsBeforeHotKeyRegisteration();
+            // after deserialize the settings, fill in the UI and validate the UI
+            FillInUiBySettingsFromManager(settings);
+            ValidateRegisterButtonAccessibility();
+            
+            // lets try to register the Hot Key as it was on the previous start
+            if ((btnRegister.IsEnabled) && (settings.bHotKeyRegistered))
+            {
+                btnRegister_Click(btnRegister, new RoutedEventArgs());
+            }
         }
         private NotifyIcon CreateNotifyIcon()
         {
@@ -99,14 +105,32 @@ namespace UI
             base.OnClosing(e);
         }
 
+        private void FillInUiBySettingsFromManager(HotKeyUiSettings settings)
+        {
+            cbAltMod.IsChecked = settings.bModAlt;
+            cbCtrlMod.IsChecked = settings.bModCtrl;
+            cbShiftMod.IsChecked = settings.bModShift;
+
+            cmbxKey.SelectedItem = ScreenShotterManager.GetKeyName(settings.nKey);
+
+            lblFolder.Content = IsFolderValid(settings.sPathForScreenshots) ? settings.sPathForScreenshots : csEmptyPath;
+        }
+
+        private static bool IsFolderValid(string? sFolderPath)
+        {
+            return !string.IsNullOrWhiteSpace(sFolderPath)
+                   && sFolderPath != csEmptyPath
+                   && Directory.Exists(sFolderPath);
+        }
+
         private void cbModificators_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            ValidateUIControlsBeforeHotKeyRegisteration();
+            ValidateRegisterButtonAccessibility();
         }
 
         private void cmbxKey_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ValidateUIControlsBeforeHotKeyRegisteration();
+            ValidateRegisterButtonAccessibility();
         }
 
         private void btnBrowseFolder_Click(object sender, RoutedEventArgs e)
@@ -118,7 +142,7 @@ namespace UI
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     lblFolder.Content = dialog.SelectedPath;
-                    ValidateUIControlsBeforeHotKeyRegisteration();
+                    ValidateRegisterButtonAccessibility();
                 }
             }
         }
@@ -126,18 +150,17 @@ namespace UI
         private void btnClearFolder_Click(object sender, RoutedEventArgs e)
         {
             lblFolder.Content = csEmptyPath;
-            ValidateUIControlsBeforeHotKeyRegisteration();
+            ValidateRegisterButtonAccessibility();
         }
 
-        private void ValidateUIControlsBeforeHotKeyRegisteration()
+        private void ValidateRegisterButtonAccessibility()
         {
             string? selectedKey = cmbxKey.SelectedItem as string;
             bool isKeySelected = !string.IsNullOrEmpty(selectedKey);
 
             string? folderPath = lblFolder.Content as string;
-            bool isFolderValid = !string.IsNullOrWhiteSpace(folderPath)
-                                  && folderPath != csEmptyPath
-                                  && Directory.Exists(folderPath);
+            bool isFolderValid = IsFolderValid(folderPath);
+
             bool isModifierUsed = cbAltMod.IsChecked == true
                                   || cbCtrlMod.IsChecked == true
                                   || cbShiftMod.IsChecked == true;
@@ -177,14 +200,14 @@ namespace UI
         {
             HotKeyUiSettings settings = new HotKeyUiSettings();
 
-            settings.bAltMod = cbAltMod.IsChecked == true;
-            settings.bCtrlMod = cbCtrlMod.IsChecked == true;
-            settings.bShiftMod = cbShiftMod.IsChecked == true;
+            settings.bModAlt = cbAltMod.IsChecked == true;
+            settings.bModCtrl = cbCtrlMod.IsChecked == true;
+            settings.bModShift = cbShiftMod.IsChecked == true;
             string sKey = (string)cmbxKey.SelectedItem;
             settings.nKey = ScreenShotterManager.AvailableKeys[sKey];
             settings.sPathForScreenshots = (string)lblFolder.Content;
 
-            if (_csManager.HotKeyRegistration(settings))
+            if (ScreenShotterManager.HotKeyRegistration(settings))
             {
                 // successfully registered Hot Key
                 lblHotKey.Content = PrepareHotKeyStrForStatus(settings, sKey);
@@ -202,11 +225,11 @@ namespace UI
 
         private void btnUnregister_Click(object sender, RoutedEventArgs e)
         {
-            if (_csManager.HotKeyUnregistration())
+            if (ScreenShotterManager.HotKeyUnregistration())
             {
                 // successfully UNregistered Hot Key
                 EnableUiControlsOnHotKeyRegistaion(true);
-                ValidateUIControlsBeforeHotKeyRegisteration();
+                ValidateRegisterButtonAccessibility();
 
                 lblHotKey.Content = "Registered Hot Key: N/A";
             }
@@ -222,17 +245,17 @@ namespace UI
         {
             List<string> hotKeyComponent = new List<string>();
 
-            if (settings.bAltMod)
+            if (settings.bModAlt)
             {
                 hotKeyComponent.Add("Alt");
             }
 
-            if (settings.bCtrlMod)
+            if (settings.bModCtrl)
             {
                 hotKeyComponent.Add("Ctrl");
             }
 
-            if (settings.bShiftMod)
+            if (settings.bModShift)
             {
                 hotKeyComponent.Add("Shift");
             }

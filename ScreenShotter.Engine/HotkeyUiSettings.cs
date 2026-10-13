@@ -12,9 +12,9 @@ namespace ScreenShotter.Engine
     [Serializable]
     public class HotKeyUiSettings
     {
-        public bool bAltMod { get; set; } = false;
-        public bool bCtrlMod { get; set; } = false;
-        public bool bShiftMod { get; set; } = false;
+        public bool bModAlt { get; set; } = false;
+        public bool bModCtrl { get; set; } = false;
+        public bool bModShift { get; set; } = false;
         public uint nKey {  get; set; }
         public string? sPathForScreenshots { get; set; } = "";
         /// <summary>
