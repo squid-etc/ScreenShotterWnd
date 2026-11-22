@@ -16,7 +16,7 @@ namespace ScreenShotter.Engine
         public bool bModCtrl { get; set; } = false;
         public bool bModShift { get; set; } = false;
         public uint nKey {  get; set; }
-        public string? sPathForScreenshots { get; set; } = "";
+        public string sPathToFolderWithScreenshots { get; set; } = "";
         /// <summary>
         /// property about was Hot Key registered successfully when App ran last time.
         /// </summary>

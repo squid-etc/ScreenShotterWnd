@@ -113,7 +113,7 @@ namespace UI
 
             cmbxKey.SelectedItem = ScreenShotterManager.GetKeyName(settings.nKey);
 
-            lblFolder.Content = IsFolderValid(settings.sPathForScreenshots) ? settings.sPathForScreenshots : csEmptyPath;
+            lblFolder.Content = IsFolderValid(settings.sPathToFolderWithScreenshots) ? settings.sPathToFolderWithScreenshots : csEmptyPath;
         }
 
         private static bool IsFolderValid(string? sFolderPath)
@@ -205,7 +205,7 @@ namespace UI
             settings.bModShift = cbShiftMod.IsChecked == true;
             string sKey = (string)cmbxKey.SelectedItem;
             settings.nKey = ScreenShotterManager.AvailableKeys[sKey];
-            settings.sPathForScreenshots = (string)lblFolder.Content;
+            settings.sPathToFolderWithScreenshots = (string)lblFolder.Content;
 
             if (ScreenShotterManager.HotKeyRegistration(settings))
             {

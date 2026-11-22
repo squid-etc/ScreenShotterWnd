@@ -48,6 +48,7 @@ namespace ScreenShotter.Engine
                 {
                     string json = File.ReadAllText(sJsonFilePath);
                     settings = JsonSerializer.Deserialize<HotKeyUiSettings>(json);
+                    // TODO: process case when one of class members or all of them are null
                 }
                 catch (Exception)
                 {
@@ -78,7 +79,7 @@ namespace ScreenShotter.Engine
         {
             if ((msg == WM_HOTKEY) && (HOTKEY_SCREENSHOT == wParam.ToInt32()))
             {
-                // OnHotkeyPressed();
+                _ = ScreenCapture.MakeScreenShotAsync();
                 handled = true;
             }
 
@@ -106,6 +107,10 @@ namespace ScreenShotter.Engine
 
             if (bSuccessRegistration)
             {
+                if (_settings is not null)
+                {
+                    ScreenCapture.RegisterHotKey(_settings.sPathToFolderWithScreenshots);
+                }
                 result = true;
                 _settings = settings;
                 _settings.bHotKeyRegistered = true;
