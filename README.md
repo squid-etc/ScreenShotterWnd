@@ -1,3 +1,3 @@
 # ScreenShotterWnd
 
-ScreenShotter has UI with ability to set a custom global hotkey for taking screenshots.
+ScreenShotter has a UI with the ability to set a custom global hotkey for taking screenshots.
